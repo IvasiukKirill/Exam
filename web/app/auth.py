@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 
-from models import User
+from models import Token
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -19,7 +19,7 @@ def init_login_manager(app):
     login_manager.init_app(app)
 
 def load_user(user_id):
-    user = User.query.get(user_id)
+    user = Token.query.get(user_id)
     return user
 
 def check_rights():
@@ -36,11 +36,11 @@ def check_rights():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        login = request.form.get('login')
-        password = request.form.get('password')
-        if login and password:
-            user = User.query.filter_by(login=login).first()
-            if user and user.check_password(password):
+
+        tocken = request.form.get('password')
+        if tocken:
+            user = Token.query.filter_by(tocken=tocken).first()
+            if user and user.check_password(tocken):
                 login_user(user)
                 flash('Вы успешно аутентифицированы.', 'success')
                 next = request.args.get('next')

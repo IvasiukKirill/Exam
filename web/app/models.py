@@ -7,20 +7,28 @@ from flask_login import UserMixin
 
 from app import db, app
 
-class User(db.Model, UserMixin):  
-    __tablename__ = 'users'
+class Token(db.Model, UserMixin):  
+    __tablename__ = 'tokens'
 
     id = db.Column(db.Integer, primary_key=True)    
-    login = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
+    tocken = db.Column(db.String(100), nullable=False)
+    id_conf = db.Column(db.String(250), nullable=False)
+    time = db.Column(db.String(100), nullable=False)
     
-    def set_password(self, password: str):
-        self.password = generate_password_hash(password)
 
 
-    def check_password(self, password: str):
-        return check_password_hash(self.password, password)
+    def check_password(self, tocken: str):
+        return self.tocken == tocken
+
+
+class Confer(db.Model, UserMixin):  
+    __tablename__ = 'confers'
+    
+    id = db.Column(db.Integer, primary_key=True)    
+    name = db.Column(db.String(100), nullable=False)
+    time = db.Column(db.String(100), nullable=False)
+
+
 
 
 
